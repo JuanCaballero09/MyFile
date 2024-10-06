@@ -1,0 +1,282 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    /* Colores-background */
+    /* ------------------------------------------- */  
+    background-color: #ffdf00;
+    background-image: radial-gradient(circle at 6% 86%, hsla(58.117647058823536, 100%, 50%, 1) 0%, transparent 67%), radial-gradient(circle at 66% 86%, hsla(37.05882352941177, 100%, 50%, 1) 0%, transparent 97.17571927909209%), radial-gradient(circle at 99% 1%, #a86602 0%, transparent 81%);
+    background-blend-mode: normal, normal, normal;
+    /* ------------------------------------------- */
+    background-size: cover;
+    background-position: center;
+    background-repeat: none;
+    background-attachment: fixed;    
+}
+
+main{
+    width: 100%;
+    margin: auto;
+    height: 100vh;
+}
+
+
+.contenedor__todo{
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+.logo{
+    width: 250px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.logo img{
+    max-width: 100%;
+    height: auto;
+}
+
+.contenedor__login{
+    width: 400px;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+
+/*----Login----*/
+.caja__login{
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    background-color: #a86602; /* cambiar color */
+    border-radius: 15px;
+    margin-bottom: 100px;
+    position: relative;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+.caja__login div{
+    margin: 50px 40px;
+    color: white;
+    transition: all 500ms;
+
+}
+
+.caja__login div p button{
+    margin-top: 30px;
+}
+
+.caja__login div h3{
+    font-weight: 400;
+    font-size: 26px;
+}
+
+.formulario__login{
+    width: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+.formulario__login h3{
+    margin-bottom: 20px;
+    text-align: center;
+    justify-content: center;
+    border-bottom: solid #ffdf00 2px;
+    padding-bottom: 20px;
+
+}
+
+.formulario__login input{
+    outline: none;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 17px;
+    box-sizing: border-box;
+}
+
+.formulario__login button{
+    padding: 10px 15px;
+    width: 100%;
+    max-width: 100%;
+    cursor: pointer;
+    border: none;
+    color: white;
+    background: black;
+    border-radius: 10px;
+    align-items: center;
+    box-sizing: border-box;
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.formulario__login button:hover{
+    color: black;
+    background: white;
+}
+.formulario__login button:active{
+    color: white;
+    background: black;
+}
+
+.formulario__login a{
+    color: white;
+    border: 10px;
+    box-sizing: 10px;
+    font-size: 17px;
+    font-weight: bold;
+}
+.formulario__login p{
+    margin-bottom: 15px;
+}
+
+
+/*----Register----*/
+.caja__register{
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    background-color: #a86602; /* cambiar color */
+    border-radius: 15px;
+    margin-bottom: 100px;
+    position: absolute;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+.caja__register div{
+    margin: 50px 40px;
+    color: white;
+    transition: all 500ms;
+    
+}
+
+.caja__register div p , button{
+    margin-top: 30px;
+}
+
+.caja__register div h3{
+    font-weight: 400;
+    font-size: 26px;
+}
+
+.formulario__register{
+    width: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+.formulario__register h3{
+    margin-bottom: 20px;
+    text-align: center;
+    justify-content: center;
+    border-bottom: solid #ffdf00 2px;
+    padding-bottom: 20px;
+    
+}
+
+.formulario__register input{
+    outline: none;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 17px;
+    box-sizing: border-box;
+}
+
+.formulario__register button{
+    padding: 10px 15px;
+    width: 100%;
+    max-width: 100%;
+    cursor: pointer;
+    border: none;
+    color: white;
+    background: black;
+    border-radius: 10px;
+    align-items: center;
+    box-sizing: border-box;
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.formulario__register button:hover{
+    color: black;
+    background: white;
+}
+.formulario__register button:active{
+    color: white;
+    background: black;
+}
+
+.formulario__register a{
+    color: white;
+    border: 10px;
+    box-sizing: 10px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.formulario__register p{
+    margin-bottom: 15px;
+}
+
+/*----Redes----*/
+.redes{
+    background: black;
+    width: 100%;
+    height: auto;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.redes img{
+    width: 100%;
+    max-width: 30px;
+    margin: 20px;
+}
+.redes a{
+    color: white;
+    
+}
+
+/*----Animación---- */
+
+.hide {  
+    opacity: 0;  
+    display: none;
+    transform: translateY(-20px);  
+    transition: 200ms;  
+    position: absolute; 
+    pointer-events: none;
+}  
+
+.caja__login, .caja__register {  
+    opacity: 1;  
+    transform: translateY(0);  
+    transition: 200ms;  
+    position: relative;   
+}
