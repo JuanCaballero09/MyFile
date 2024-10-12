@@ -37,8 +37,7 @@ class MyApp extends StatelessWidget{
               return Center(child: Column(children: [CircularProgressIndicator()],mainAxisAlignment: MainAxisAlignment.center,),);
             }
           },
-          )
-        
+        )
       )
     );
   }
@@ -56,35 +55,35 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(        
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [        
-        Text(''),
-        Text('- Usuario -'),
-        Text('Id : ${usuario.id}'),
-        Text('name: ${usuario.name}'),
-        Text('username: ${usuario.username}'),
-        Text('email: ${usuario.email}'),
-        Text('phone: ${usuario.phone}'),
-        Text('website: ${usuario.website}'),
-        Text(''),
-        Text('- Empresa -'),
-        Text('nombre: ${usuario.company?.name}'),
-        Text('bs: ${usuario.company?.bs}'),
-        Text('catchPhrase: ${usuario.company?.catchPhrase}'),
-        Text(''),
-        Text('- Dirección -'),
-        Text('street: ${usuario.address?.street}'),
-        Text('suite: ${usuario.address?.suite}'),
-        Text('city: ${usuario.address?.city}'),
-        Text('zipcode: ${usuario.address?.zipcode}'),
-        Text(''),
-        Text('- Geo -'),
-        Text('lat: ${usuario.address?.geo?.lat}'),
-        Text('lng: ${usuario.address?.geo?.lng}'),
-        Text(''),
-        Text(''),
-        FloatingActionButton(onPressed: (){}, child: Icon(Icons.search,size: 40,),)
-    
-      ],),
+          Text(''),
+          Text('- Usuario -'),
+          Text('Id : ${usuario.id}'),
+          Text('name: ${usuario.name}'),
+          Text('username: ${usuario.username}'),
+          Text('email: ${usuario.email}'),
+          Text('phone: ${usuario.phone}'),
+          Text('website: ${usuario.website}'),
+          Text(''),
+          Text('- Empresa -'),
+          Text('nombre: ${usuario.company?.name}'),
+          Text('bs: ${usuario.company?.bs}'),
+          Text('catchPhrase: ${usuario.company?.catchPhrase}'),
+          Text(''),
+          Text('- Dirección -'),
+          Text('street: ${usuario.address?.street}'),
+          Text('suite: ${usuario.address?.suite}'),
+          Text('city: ${usuario.address?.city}'),
+          Text('zipcode: ${usuario.address?.zipcode}'),
+          Text(''),
+          Text('- Geo -'),
+          Text('lat: ${usuario.address?.geo?.lat}'),
+          Text('lng: ${usuario.address?.geo?.lng}'),
+          Text(''),
+          Text(''),
+        ],
+      ),
     );
   }
 }
@@ -115,10 +114,7 @@ class Users {
 
     Address address = Address(m['address']);
     this.address = address;
-
   }
-
-  
 }
 
 class Company{
@@ -131,8 +127,6 @@ class Company{
     this.bs = m['bs'];
     this.catchPhrase = m['catchPhrase'];
     this.name = m['name'];
-    
-
   }
 }
 
@@ -152,7 +146,6 @@ class Address{
     Geo geo =  Geo(m['geo']);
     this.geo = geo;
   }
-
 }
 
 class Geo{
@@ -160,7 +153,7 @@ class Geo{
   String? lng;
 
   Geo(Map m){
-        
+     
     this.lat = m['lat'];
     this.lng = m['lng'];
   }
