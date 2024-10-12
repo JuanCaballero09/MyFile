@@ -3,23 +3,92 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 void main(){
-
-// String ab = '{"id":5,"name":"Chelsey Dietrich","username":"Kamren","email":"Lucio_Hettinger@annie.ca","address":{"street":"Skiles Walks","suite":"Suite 351","city":"Roscoeview","zipcode":"33263","geo":{"lat":"-31.8129","lng":"62.5342"}},"phone":"(254)954-1289","website":"demarco.info","company":{"name":"Keebler LLC","catchPhrase":"User-centric fault-tolerant solution","bs":"revolutionize end-to-end systems"}}';
-
-// Map <String, dynamic> a =  jsonDecode(ab);
-
-Users usuario = Users(mapeo() as Map);
-
-runApp(Myapp(usuario));
-
+ runApp(MyApp());
 }
 
 Future<Map<String,dynamic>> mapeo()async{
-  var url = Uri.http('https://jsonplaceholder.typicode.com/', 'users/5');
+  var url = Uri.http('jsonplaceholder.typicode.com', 'users/5');
   var response = await http.get(url);
   Map<String, dynamic> map = jsonDecode(response.body); 
   return map;
 }
+
+
+class MyApp extends StatelessWidget{
+  
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'App Json',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('App Json'), 
+          backgroundColor: Colors.deepPurple,
+          foregroundColor: Colors.white,
+        ),
+
+        body: FutureBuilder(
+          future: mapeo(), 
+          builder: (context, snapshot){
+            if (snapshot.hasData) {
+              Users usuario = Users(snapshot.data as Map);
+              return Home(usuario: usuario);
+            } else {
+              return Center(child: Column(children: [CircularProgressIndicator()],mainAxisAlignment: MainAxisAlignment.center,),);
+            }
+          },
+          )
+        
+      )
+    );
+  }
+}
+
+class Home extends StatelessWidget {
+  const Home({
+    super.key,
+    required this.usuario
+  });
+
+  final Users usuario;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(        
+      child: Column(
+        children: [        
+        Text(''),
+        Text('- Usuario -'),
+        Text('Id : ${usuario.id}'),
+        Text('name: ${usuario.name}'),
+        Text('username: ${usuario.username}'),
+        Text('email: ${usuario.email}'),
+        Text('phone: ${usuario.phone}'),
+        Text('website: ${usuario.website}'),
+        Text(''),
+        Text('- Empresa -'),
+        Text('nombre: ${usuario.company?.name}'),
+        Text('bs: ${usuario.company?.bs}'),
+        Text('catchPhrase: ${usuario.company?.catchPhrase}'),
+        Text(''),
+        Text('- Dirección -'),
+        Text('street: ${usuario.address?.street}'),
+        Text('suite: ${usuario.address?.suite}'),
+        Text('city: ${usuario.address?.city}'),
+        Text('zipcode: ${usuario.address?.zipcode}'),
+        Text(''),
+        Text('- Geo -'),
+        Text('lat: ${usuario.address?.geo?.lat}'),
+        Text('lng: ${usuario.address?.geo?.lng}'),
+        Text(''),
+        Text(''),
+        FloatingActionButton(onPressed: (){}, child: Icon(Icons.search,size: 40,),)
+    
+      ],),
+    );
+  }
+}
+
 
 
 class Users {
@@ -97,55 +166,3 @@ class Geo{
   }
 }
 
-
-class Myapp extends StatelessWidget{
-  final Users usuario;
-  Myapp(this.usuario);
-  
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'App Json',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('App Json'), 
-          backgroundColor: Colors.deepPurple,
-          foregroundColor: Colors.white,
-        ),
-
-        body: Center(          
-          child: Column(
-            children: [
-            Text(''),
-            Text('- Usuario -'),
-            Text('Id : ${usuario.id}'),
-            Text('name: ${usuario.name}'),
-            Text('username: ${usuario.username}'),
-            Text('email: ${usuario.email}'),
-            Text('phone: ${usuario.phone}'),
-            Text('website: ${usuario.website}'),
-            Text(''),
-            Text('- Empresa -'),
-            Text('nombre: ${usuario.company?.name}'),
-            Text('bs: ${usuario.company?.bs}'),
-            Text('catchPhrase: ${usuario.company?.catchPhrase}'),
-            Text(''),
-            Text('- Dirección -'),
-            Text('street: ${usuario.address?.street}'),
-            Text('suite: ${usuario.address?.suite}'),
-            Text('city: ${usuario.address?.city}'),
-            Text('zipcode: ${usuario.address?.zipcode}'),
-            Text(''),
-            Text('- Geo -'),
-            Text('lat: ${usuario.address?.geo?.lat}'),
-            Text('lng: ${usuario.address?.geo?.lng}'),
-            Text(''),
-            Text(''),
-            FloatingActionButton(onPressed: (){}, child: Icon(Icons.search,size: 40,),)
-
-          ],),
-        ),
-      )
-    );
-  }
-}
