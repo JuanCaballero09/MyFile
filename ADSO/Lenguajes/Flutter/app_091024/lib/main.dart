@@ -6,6 +6,7 @@ void main(){
  runApp(MyApp());
 }
 
+
 Future<Map<String,dynamic>> mapeo()async{
   var url = Uri.http('jsonplaceholder.typicode.com', 'users/5');
   var response = await http.get(url);
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget{
     );
   }
 }
+
 
 class Home extends StatelessWidget {
   const Home({
@@ -89,7 +91,6 @@ class Home extends StatelessWidget {
 }
 
 
-
 class Users {
   int? id;
   String? name;
@@ -117,6 +118,7 @@ class Users {
   }
 }
 
+
 class Company{
   String? name;
   String? catchPhrase;
@@ -129,6 +131,7 @@ class Company{
     this.name = m['name'];
   }
 }
+
 
 class Address{
   String? street;
@@ -148,12 +151,13 @@ class Address{
   }
 }
 
+
 class Geo{
   String? lat;
   String? lng;
 
   Geo(Map m){
-     
+
     this.lat = m['lat'];
     this.lng = m['lng'];
   }
