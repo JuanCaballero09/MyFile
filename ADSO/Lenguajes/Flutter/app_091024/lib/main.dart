@@ -6,8 +6,9 @@ void main(){
  runApp(MyApp());
 }
 
+
 Future<Map<String,dynamic>> mapeo()async{
-  var url = Uri.http('jsonplaceholder.typicode.com', 'users/5');
+  var url = Uri.http('jsonplaceholder.typicode.com', 'users/2');
   var response = await http.get(url);
   Map<String, dynamic> map = jsonDecode(response.body); 
   return map;
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget{
     return MaterialApp(
       title: 'App Json',
       home: Scaffold(
+
         appBar: AppBar(
           title: Text('App Json'), 
           backgroundColor: Colors.deepPurple,
@@ -34,15 +36,15 @@ class MyApp extends StatelessWidget{
               Users usuario = Users(snapshot.data as Map);
               return Home(usuario: usuario);
             } else {
-              return Center(child: Column(children: [CircularProgressIndicator()],mainAxisAlignment: MainAxisAlignment.center,),);
+              return Center(child: Column(mainAxisAlignment: MainAxisAlignment.center,children: [CircularProgressIndicator()],),);
             }
           },
-          )
-        
+        )
       )
     );
   }
 }
+
 
 class Home extends StatelessWidget {
   const Home({
@@ -56,39 +58,38 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(        
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [        
-        Text(''),
-        Text('- Usuario -'),
-        Text('Id : ${usuario.id}'),
-        Text('name: ${usuario.name}'),
-        Text('username: ${usuario.username}'),
-        Text('email: ${usuario.email}'),
-        Text('phone: ${usuario.phone}'),
-        Text('website: ${usuario.website}'),
-        Text(''),
-        Text('- Empresa -'),
-        Text('nombre: ${usuario.company?.name}'),
-        Text('bs: ${usuario.company?.bs}'),
-        Text('catchPhrase: ${usuario.company?.catchPhrase}'),
-        Text(''),
-        Text('- Dirección -'),
-        Text('street: ${usuario.address?.street}'),
-        Text('suite: ${usuario.address?.suite}'),
-        Text('city: ${usuario.address?.city}'),
-        Text('zipcode: ${usuario.address?.zipcode}'),
-        Text(''),
-        Text('- Geo -'),
-        Text('lat: ${usuario.address?.geo?.lat}'),
-        Text('lng: ${usuario.address?.geo?.lng}'),
-        Text(''),
-        Text(''),
-        FloatingActionButton(onPressed: (){}, child: Icon(Icons.search,size: 40,),)
-    
-      ],),
+          Text(''),
+          Text('- Usuario -'),
+          Text('Id : ${usuario.id}'),
+          Text('name: ${usuario.name}'),
+          Text('username: ${usuario.username}'),
+          Text('email: ${usuario.email}'),
+          Text('phone: ${usuario.phone}'),
+          Text('website: ${usuario.website}'),
+          Text(''),
+          Text('- Empresa -'),
+          Text('nombre: ${usuario.company?.name}'),
+          Text('bs: ${usuario.company?.bs}'),
+          Text('catchPhrase: ${usuario.company?.catchPhrase}'),
+          Text(''),
+          Text('- Dirección -'),
+          Text('street: ${usuario.address?.street}'),
+          Text('suite: ${usuario.address?.suite}'),
+          Text('city: ${usuario.address?.city}'),
+          Text('zipcode: ${usuario.address?.zipcode}'),
+          Text(''),
+          Text('- Geo -'),
+          Text('lat: ${usuario.address?.geo?.lat}'),
+          Text('lng: ${usuario.address?.geo?.lng}'),
+          Text(''),
+          Text(''),
+        ],
+      ),
     );
   }
 }
-
 
 
 class Users {
@@ -117,8 +118,6 @@ class Users {
     this.address = address;
 
   }
-
-  
 }
 
 class Company{
@@ -132,9 +131,9 @@ class Company{
     this.catchPhrase = m['catchPhrase'];
     this.name = m['name'];
     
-
   }
 }
+
 
 class Address{
   String? street;
@@ -149,11 +148,13 @@ class Address{
     this.suite = m['suite'];
     this.city = m['city'];
     this.zipcode = m['zipcode'];
+
     Geo geo =  Geo(m['geo']);
     this.geo = geo;
-  }
 
+  }
 }
+
 
 class Geo{
   String? lat;
@@ -163,6 +164,7 @@ class Geo{
         
     this.lat = m['lat'];
     this.lng = m['lng'];
+
   }
 }
 
