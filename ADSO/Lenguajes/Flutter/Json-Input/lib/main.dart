@@ -3,7 +3,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 void main(){
- runApp(Homes());
+
+  runApp(Homes());
+  
 }
 
 Future<Map<String,dynamic>> mapeo(String id) async {
@@ -12,11 +14,8 @@ Future<Map<String,dynamic>> mapeo(String id) async {
   var response = await http.get(url);
   Map<String, dynamic> map = jsonDecode(response.body); 
   return map;
+
 }
-
-
-
-
 
 // ignore: must_be_immutable
 class Homes extends StatelessWidget{
@@ -88,6 +87,7 @@ class MyApp extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'App Json',
       home: Scaffold(
@@ -102,46 +102,57 @@ class MyApp extends StatelessWidget{
           future: mapeo(id), 
           builder: (context, snapshot){
             if (snapshot.hasData) {
+
               Users usuario = Users(snapshot.data as Map);
               return Home(usuario: usuario);
             } 
             else {
               
-              return  Center(child: Column(mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-                Text(''),
-                Text(''),
-                Text(''),
-                Text(''),
-                
-                Builder(
-                builder: (context) => ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => Homes()),
-                      (Route<dynamic> route) => false,
-                    );
-                  },
-                              
-                  style: ElevatedButton.styleFrom(  
-                      shape: RoundedRectangleBorder(  
-                      borderRadius: BorderRadius.circular(10),  
-                    ),  
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),  
-                  ),
-                  
-                  child: Text('Regresar', style: TextStyle(color: Colors.black, fontSize: 16),),
-                ),
-              ),
-                ],),);
+              return  Loading();
             }
           },
-          )
-        
+        )
       )
     );
+  }
+}
+
+class Loading extends StatelessWidget {
+  const Loading({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Column(mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      CircularProgressIndicator(),
+      Text(''),
+      Text(''),
+      Text(''),
+      Text(''),
+      
+      Builder(
+      builder: (context) => ElevatedButton(
+        onPressed: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => Homes()),
+            (Route<dynamic> route) => false,
+          );
+        },
+                    
+        style: ElevatedButton.styleFrom(  
+            shape: RoundedRectangleBorder(  
+            borderRadius: BorderRadius.circular(10),  
+          ),  
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),  
+        ),
+        
+        child: Text('Regresar', style: TextStyle(color: Colors.black, fontSize: 16),),
+      ),
+    ),
+      ],),);
   }
 }
 
