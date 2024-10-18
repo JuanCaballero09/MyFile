@@ -10,7 +10,7 @@ void main(){
   // Enteros 
   int edad = 18;
   // flotantes o decimales
-  int altura = 1.7;
+  double altura = 1.7;
 
   // booleanos
 
