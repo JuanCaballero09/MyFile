@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../models/users.dart';
 
+// ignore: must_be_immutable
 class DataUser extends StatelessWidget{
   
   User user;
