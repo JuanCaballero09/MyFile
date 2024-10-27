@@ -19,7 +19,7 @@ class DataUser extends StatelessWidget{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(''),
+              // Text(''),
               Text('- USER -'),
               Text('id: ${user.id}'),
               Text('name: ${user.name}'),
