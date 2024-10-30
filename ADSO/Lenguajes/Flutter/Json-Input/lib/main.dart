@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-void main() => runApp(Homes());
+void main() { 
+  runApp(Homes());
+  //runApp(MyApp(id: '1'));
+}
 
 Future<Map<String,dynamic>> mapeo(String id) async {
   
   var url = Uri.http('jsonplaceholder.typicode.com', 'users/$id');
   var response = await http.get(url);
-  Map<String, dynamic> map = jsonDecode(response.body); 
+  if (response.statusCode != 200) {
+    throw Exception('Error al cargar los datos: ${response.statusCode}');
+  }
+  Map<String, dynamic> map = jsonDecode(response.body);
   return map;
-
 }
 
 // ignore: must_be_immutable
@@ -94,17 +99,19 @@ class MyApp extends StatelessWidget{
           
         ),
 
-        body: FutureBuilder(
+        body: FutureBuilder<Map>(
           future: mapeo(id), 
-          builder: (context, snapshot){
-            if (snapshot.hasData) {
+          builder: (BuildContext context, AsyncSnapshot<Map> snapshot){
+            if (snapshot.connectionState == ConnectionState.waiting) {
 
-              Users usuario = Users(snapshot.data as Map);
-              return Home(usuario: usuario);
-            } 
-            else {
+              return Loading();
+            } else if (snapshot.hasError) {
               
-              return  Loading();
+              return  DataError();
+
+            } else {
+
+              return Home(usuario: Users(snapshot.data as Map));
             }
           },
         )
@@ -211,13 +218,47 @@ class Home extends StatelessWidget {
                   
             child: Text('Regresar', style: TextStyle(color: Colors.black, fontSize: 16),),
             )
-          ),   
+          ),
         ],
       ),
     );
   }
 }
 
+class DataError extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Ha ocurrido un error '),
+              Image.asset('assets/image/error-icon-32.png', height: 40,)
+            ],
+          ),
+
+          Text(''),
+          Text(''),
+
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context, 
+                MaterialPageRoute(builder: (context) => Homes()),
+                (Route<dynamic> route) => false,
+              );
+            }, 
+            child: Text('Regresar')
+          )
+        ],
+      ),         
+    );
+  }
+
+}
 
 
 class Users {
