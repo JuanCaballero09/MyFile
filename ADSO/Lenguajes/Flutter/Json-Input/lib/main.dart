@@ -4,7 +4,6 @@ import 'dart:convert';
 
 void main() { 
   runApp(Homes());
-  //runApp(MyApp(id: '1'));
 }
 
 Future<Map<String,dynamic>> mapeo(String id) async {

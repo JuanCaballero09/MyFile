@@ -1,43 +1,42 @@
 class Usuario {
 
-  String _nombre; // atributo privado
-  int _edad; // atributo privado
-  double _altura; // atributo privado
+  String nombre; // atributo privado
+  int edad; // atributo privado
+  double altura; // atributo privado
   
   String email;
   
 
 
-  Usuario({required String this._nombre = '',required int this._edad = 0 ,required double this._altura = 0.0, String this.email = '' });
+  Usuario({ String this.nombre = '', int this.edad = 0 , double this.altura = 0.0, String this.email = '' });
 
   String getNombre(){
-
-    return _nombre;
+    return nombre;
 
   }
 
   setNombre(String nombre){
-    this._nombre = nombre;
+    this.nombre = nombre;
+
   }
 
   int getEdad(){
-    
-    return this._edad;
+    return this.edad;
 
   }
 
-   setNombre(int edad){
-    this._edad = edad;
+  setEdad (int edad){
+    this.edad = edad;
   }
 
   double getAltura(){
     
-    return this._altura;
+    return this.altura;
 
   }
 
-  setNombre(double altura){
-    this._altura = altura;
+  setAltura(double altura){
+    this.altura = altura;
   }
 
 } 

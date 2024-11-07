@@ -2,7 +2,7 @@ void main(){
   String nombre = 'Juan Caballero';
 
   int edad = 18;
-  int altura = 1.7;
+  double altura = 1.7;
 
 
   bool mayorDeEdad = true;
