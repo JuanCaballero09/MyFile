@@ -1,0 +1,247 @@
+body{
+    background-image: url(../img/background-bancoop.webp) ;
+    background-repeat: none;
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(10px);
+}
+
+main{
+    font-family: Arial, Helvetica, sans-serif;
+    width: 800px;
+    margin: auto;
+}
+
+section{
+    display: flex;
+}
+
+header {
+    display: flex;
+    background-color: rgb(178, 178, 178);
+    justify-content: center;
+    border-radius: 20px 20px 0 0; 
+    border-bottom: 15px solid rgb(35, 35, 35);
+}
+
+header img{
+    width: 250px;
+    height: auto;
+}
+
+header section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+header h4{
+    font-size: 23px;
+    margin: 0;
+}
+
+header h1 {
+    font-size: 70px;
+    margin: 0;
+    color: black;
+    text-shadow:   
+        5px 5px 0 rgb(208, 208, 208),   
+        -5px -5px 0 rgb(208, 208, 208), 
+        5px -5px 0 rgb(208, 208, 208),
+        -5px 5px 0  rgb(208, 208, 208);
+
+}
+
+nav {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: rgb(255, 185, 1);
+    padding: 20px 0;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);  
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+nav p {
+    margin: 0;
+    color: white;
+}
+
+footer {
+    background-color: rgb(35, 35, 35);
+    text-align: center;
+    color: white;
+    padding: 15px;
+    border-radius: 0px 0px 20px 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);  
+}
+
+footer p {
+    margin: 4px;
+}
+
+
+aside{
+    padding: 10px;
+    margin: 10px 10px 10px 0;
+    width: 350px;
+}
+
+.sect{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: rgb(178, 178, 178);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);  
+    border-radius: 20px 20px 0 0;
+    margin-bottom: 15px;
+}
+
+.sect h4{
+    font-size: 15px;
+    color: white;
+    padding: 17px;
+    margin: -10px;
+    margin-bottom: auto;
+    letter-spacing: 3px;
+    background-color: rgb(35, 35, 35);
+    border-radius: 20px 20px 0 0;
+}
+
+form{
+    align-items: center;
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+}
+
+button{
+    grid-column: 1 / span 2;
+    display: block;
+    margin: 0 auto;
+    background-color: rgb(255, 185, 1);
+    border: 1.9px solid;
+    padding: 4px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover{
+    background-color: white;
+}
+
+form input{
+    border: 2px solid gray;
+    border-radius: 0;
+    padding: 5px;
+}
+
+.art{
+    background-color: rgb(35, 35, 35);
+    color: rgb(255, 185, 1);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.art a {
+    color: rgb(160, 160, 160);
+    font-weight: 500;
+    padding: 5px 0;
+    margin-top: 5px;
+    text-align: center;
+    width: 100%;
+    border-bottom: 2px solid rgb(59, 59, 59);
+}
+article .a{
+    border: 0;
+}
+
+.art h5{
+    text-align: center;
+    background-color: rgb(20, 20, 20);
+    padding: 10px 10px;
+    margin: -10px;
+    margin-bottom: auto;
+    width: 100%;
+    font-style: italic;
+}
+
+.sec{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 10px 0 10px 10px;
+
+}
+
+.sec .secti{
+    margin: 0 0 5px 0;
+}
+
+.sec .secti1{
+    margin: 5px 0 0 0;
+}
+
+
+.sec article {
+    background: linear-gradient(white, rgb(167, 167, 167));
+    padding: 10px;
+    max-height: 275px;
+    margin: 10px;
+    /* height: 100%; */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+.sec h5 {
+    background-color: rgb(35, 35, 35);
+    padding: 17px;
+    margin: -10px;
+    margin-bottom: auto;
+    color: white;
+    text-align: center;
+    font-style: italic;
+    letter-spacing: 1px;
+    font-size: 12px;
+}
+
+.sec p{
+    font-size: 12px;
+    margin: 0;
+}  
+
+.sec div{
+    display: flex;
+    justify-content: center;
+}
+
+.sec img{
+    height: 110px;
+}
+
+.sec .art1{
+    border-radius: 20px 0 0 0 ;
+}
+
+.sec .art2{
+    border-radius: 0 20px 0 0 ;
+}
+
+.sec .art3{
+    border-radius: 0 0 0 20px  ;
+}
+
+.sec .art4{
+    border-radius: 0 0 20px  0 ;
+}
