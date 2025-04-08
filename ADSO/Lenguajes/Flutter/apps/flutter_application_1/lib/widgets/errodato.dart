@@ -7,7 +7,7 @@ class Errordato extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Mensaje de erro'),);
+    return const Center(child: Text('Mensaje de erro'),);
   }
 }
 

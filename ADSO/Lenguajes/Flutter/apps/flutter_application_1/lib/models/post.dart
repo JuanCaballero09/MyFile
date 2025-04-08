@@ -8,9 +8,9 @@ class Post{
 
   Post(String jsonString){
     Map data = jsonDecode(jsonString);
-    this.userId = data['userId'];
-    this.id = data['id'];
-    this.title = data['title'];
-    this.body = data['body'];
+    userId = data['userId'];
+    id = data['id'];
+    title = data['title'];
+    body = data['body'];
   }
 }

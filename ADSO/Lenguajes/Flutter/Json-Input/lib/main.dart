@@ -23,6 +23,8 @@ class Homes extends StatelessWidget{
   final ids = TextEditingController();
 
   String id = '';
+
+  Homes({super.key});
   
   @override
   Widget build(BuildContext context) {
@@ -83,7 +85,7 @@ class MyApp extends StatelessWidget{
   
   final String id;
 
-  MyApp({required this.id});
+  const MyApp({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -225,6 +227,8 @@ class Home extends StatelessWidget {
 }
 
 class DataError extends StatelessWidget{
+  const DataError({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -272,12 +276,12 @@ class Users {
 
   Users(Map m){
     
-    this.id =  m['id'];
-    this.name = m['name'];
-    this.username = m['username'];
-    this.email = m['email'];
-    this.phone = m['phone'];
-    this.website = m['website'];
+    id =  m['id'];
+    name = m['name'];
+    username = m['username'];
+    email = m['email'];
+    phone = m['phone'];
+    website = m['website'];
 
     Company company = Company(m['company']);
     this.company = company;
@@ -297,9 +301,9 @@ class Company{
 
   Company(Map m){
         
-    this.bs = m['bs'];
-    this.catchPhrase = m['catchPhrase'];
-    this.name = m['name'];
+    bs = m['bs'];
+    catchPhrase = m['catchPhrase'];
+    name = m['name'];
     
 
   }
@@ -314,10 +318,10 @@ class Address{
 
   Address(Map m){
     
-    this.street = m['street'];
-    this.suite = m['suite'];
-    this.city = m['city'];
-    this.zipcode = m['zipcode'];
+    street = m['street'];
+    suite = m['suite'];
+    city = m['city'];
+    zipcode = m['zipcode'];
     Geo geo =  Geo(m['geo']);
     this.geo = geo;
   }
@@ -330,7 +334,7 @@ class Geo{
 
   Geo(Map m){
         
-    this.lat = m['lat'];
-    this.lng = m['lng'];
+    lat = m['lat'];
+    lng = m['lng'];
   }
 }

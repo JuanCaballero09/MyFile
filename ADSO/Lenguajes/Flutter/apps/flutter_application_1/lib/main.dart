@@ -11,6 +11,8 @@ void main(){
 }
 
 class MyApp extends StatelessWidget{
+  const MyApp({super.key});
+
 
   Future<Post> fetchData() async {
     final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/3');
@@ -30,9 +32,9 @@ class MyApp extends StatelessWidget{
           future: fetchData(), // Llama a la función que retorna un Future
           builder: (BuildContext context, AsyncSnapshot<Post> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Loading();
+              return const Loading();
             } else if (snapshot.hasError) {
-              return Errordato();
+              return const Errordato();
             } else {
               Post post = snapshot.data!;
               return Success(post: post);
