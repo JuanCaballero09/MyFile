@@ -1,7 +1,117 @@
-h1{
-    text-align: center;
+h1 {  
+    text-align: center;  
+    color: #333; /* Color del texto más oscuro */  
+    font-size: 2.5em;  
+    margin: 20px 0;  
+    display: block;
+}  
+
+body {  
+    margin: 0;  
+    font-family: 'Quicksand', sans-serif;  
+}  
+
+.food-item {  
+    display: flex;               /* Habilita el uso de flexbox */  
+    flex-direction: column;     /* Organiza elementos en una columna */  
+    justify-content: space-between; /* Espacia los hijos para llenar el espacio */  
+    height: 100%; /* Asegura que todos los elementos tengan la misma altura */  
+    margin: 20px;  
+    padding: 20px;  
+    border-radius: 15px;  
+    background-color: #fff;  
+    width: 300px;  
+    text-align: center;  
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);  
+}  
+
+.food-item img {  
+    width: 100%; /* Ancho completo al contenedor */  
+    height: auto;  
+    border-radius: 15px;  
+    transition: transform 0.3s ease;  
+}  
+
+.food-item p,   
+.food-item ul {  
+    display: none; /* Por defecto oculto */  
+    text-align: center;  
+    font-size: 1.2em; /* Más pequeño para mejor ajuste */  
+}  
+
+.food-item:hover {  
+    background-color: #e9ffe9; /* Color de fondo más claro al pasar el mouse */  
+    transform: scale(1.03);  
+}  
+
+.food-item:hover p,   
+.food-item:hover ul {  
+    display: block;  
+    opacity: 1;  
+    transition: opacity 0.5s ease;  
+}  
+
+.food-item h2 {  
+    font-size: 1.5em;  
+    color: #4CAF50; /* Color verde para el título */  
+    margin: 10px 0; /* Espaciado vertical */  
+}  
+
+.food-item button {  
+    background-color: #4CAF50;  
+    color: white;  
+    border: none;  
+    padding: 10px 20px;  
+    text-align: center;  
+    text-decoration: none;  
+    display: inline-block;  
+    font-size: 16px;  
+    margin: 10px 0; /* Mayor margen vertical */  
+    cursor: pointer;  
+    border-radius: 12px;  
+    transition: background-color 0.3s ease;  
+}  
+
+.food-item button:hover {  
+    background-color: #45a049; /* Color más oscuro al pasar el mouse */  
+    transform: scale(1.05); /* Efecto de zoom suave */  
+}  
+
+.food-item ul {  
+    list-style-type: none;  
+    padding: 0;  
+    margin: 10px 0; /* Espaciado vertical */  
+}  
+
+#grupos{  
+    display: flex;  
+    flex-wrap: row wrap; /* Permite que los elementos se envuelvan */  
+    justify-content: center; /* Centra los grupos */  
 }
-body{
-    margin: 0;
-    font-family: 'Quicksand', sans-serif;
+
+@media (max-width: 768px) {
+    .food-item {  
+        width: 90%; /* Ancho completo en pantallas pequeñas */  
+        margin: 10px; /* Menor margen */  
+    }  
+    h1 {  
+        font-size: 2em; /* Tamaño de fuente más pequeño en pantallas pequeñas */  
+    }
+    .food-item h2 {  
+        font-size: 1.2em; /* Tamaño de fuente más pequeño para el título */  
+    }
+    .food-item p,
+    .food-item ul {  
+        font-size: 1em; /* Tamaño de fuente más pequeño para el texto */  
+        display: block;
+    }
+    .food-item button {  
+        font-size: 14px; /* Tamaño de fuente más pequeño para el botón */  
+    }
+    .food-item img {  
+        width: 100%; /* Ancho completo al contenedor */  
+        height: auto;  
+        border-radius: 15px;  
+        transition: transform 0.3s ease;  
+    }
 }
