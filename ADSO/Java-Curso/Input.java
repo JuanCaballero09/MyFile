@@ -18,7 +18,6 @@ public class Input {
 
         resultado = num1 + num2;
 
-
         System.out.println("Hola " + nombre + " su suma dio: " + resultado);
         
     }
