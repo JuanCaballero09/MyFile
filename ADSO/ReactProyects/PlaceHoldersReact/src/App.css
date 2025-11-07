@@ -1,0 +1,64 @@
+.loading-widget{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    color: #fff;
+}
+
+.userCard {
+    display: flex;
+    width: 500px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #bbbbbb52;
+    padding: 10px;
+    color: #fff;
+    margin: 10px;
+    border-radius: 15px;
+    border: 1px solid rgb(129, 129, 129);
+
+}
+
+.userCard-user{
+    display: flex;
+    gap: 10px;
+}
+
+.userCard-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.userCard-info strong {
+    font-size: 20px;
+}
+
+.userCard-info span {
+    font-size: 12px;
+}
+
+.userCard-avatar {
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+}
+
+.userCard-button{
+    font-size: 15px;
+    border-radius: 15px;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0);
+    color: white;
+    opacity: .8;
+    padding: 10px;
+    width: 180px;
+    cursor: pointer;
+    transition: .3s ease all;
+}
+
+.userCard-button:hover{
+    border: 2px solid rgb(75, 240, 75);
+    background-color: rgba(75, 240, 75, 0.35);
+}
