@@ -7,11 +7,19 @@ import { WinnerModal } from './components/WinnerModal'
 import { TURNS, WINNER_COMBOS } from './constant'
 
 export function App() {
+    
     // Estado del tablero
-    const [board, setBoard] = useState(Array(9).fill(null))
-
+    const [board, setBoard] = useState(() => {
+        const boardFromLocalStorage = window.localStorage.getItem('board')
+        return boardFromLocalStorage ? JSON.parse(boardFromLocalStorage) : Array(9).fill(null)
+    })
+    
     // Estado del turno
-    const [turn, setTurn] = useState(TURNS.X)
+    const [turn, setTurn] = useState(()=>{
+        const turnFromLocalStorage = window.localStorage.getItem('turn')
+        if (turnFromLocalStorage) return JSON.parse(turnFromLocalStorage)
+        return TURNS.X
+    })
 
     // Estado del ganador
     const [winner, setWinner] = useState(null)
@@ -36,6 +44,9 @@ export function App() {
         setBoard(Array(9).fill(null))
         setTurn(TURNS.X)
         setWinner(null)
+
+        window.localStorage.removeItem('board')
+        window.localStorage.removeItem('turn')
     }
 
     const checkEndGame = (boardToCheck) => {
@@ -55,13 +66,25 @@ export function App() {
         const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
         setTurn(newTurn)
 
+        // Guardar partida
+        window.localStorage.setItem('board', JSON.stringify(newBoard))
+        window.localStorage.setItem('turn', JSON.stringify(newTurn))
+
         // Revisar si hay ganador
         const newWinner = checkWinner(newBoard)
         if (newWinner){
             confetti()
             setWinner(newWinner)
+
+            window.localStorage.removeItem('board')
+            window.localStorage.removeItem('turn')
+            
         } else if (checkEndGame(newBoard)) {
+
             setWinner(false)
+
+            window.localStorage.removeItem('board')
+            window.localStorage.removeItem('turn')
         }
     }
 
