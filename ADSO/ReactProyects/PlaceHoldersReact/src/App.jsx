@@ -4,6 +4,8 @@ import {UserCard} from './UserCard.jsx'
 
 
 export function App() {
+
+    // estados
     const [success, setSucces] = useState([])
     const [loading, setLoading] = useState(true)
     const [failed, setFailed] = useState(false)
