@@ -1,7 +1,9 @@
 import './App.css'
 import { useState, useEffect } from 'react'
-import {UserCard} from './UserCard.jsx'
 
+import { UserCard } from './UserCard.jsx'
+import { LoadingDots } from './LoadingDots.jsx'
+import { FailedComponent } from './FailedComponent.jsx'
 
 export function App() {
 
@@ -35,18 +37,17 @@ export function App() {
         obtenerUsers();
     }, []);
 
+    
+
     return (
         <>  
             {loading ? (
                 <section className='loading-widget'>
                     <h1>BIENVENIDO AL SOFTWARE</h1> 
-                    <h2>Cargando...</h2>
+                    <LoadingDots />
                 </section>
             ) : failed ? (
-                <section className='failed-widget'>
-                    <h1>Se ha Producido un error inesperado</h1>
-                    <h2>Comprueba tu estado de red o contacta a soporte</h2>
-                </section>
+                <FailedComponent/>
             ) : (
                 <section className='UsersCards'> 
                     {success.map(user =>{

@@ -4,17 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="public/pngimg.com - pacman_PNG79.png" type="image/x-icon">
-    <title>Pac-Man</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     
-    <h1>Pac-Man Game JS</h1>
+    
+    <div class="info">
+        <h1>PAC-MAN GAME JS</h1>
+        <small>- Usa las flechas del teclado para mover a Pac-Man</small>
+        <small>- Come todos los puntos y evita a los fantasmas</small>
+        
+        <hr>
+    </div>
 
     <div id="game"></div>
 
+
     <div id="modal" class="modal hidden">
         <h2 class="modal-h2">¡Ganaste!</h2>
+        <p class="modal-time" id="finalTime"></p>
         <button id="retry" class="modal-button">Reintentar</button>
     </div>
 
