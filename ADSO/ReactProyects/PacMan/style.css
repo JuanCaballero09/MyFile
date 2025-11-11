@@ -128,7 +128,7 @@ hr {
     background: yellow;
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    animation: pulsePower 1.5s infinitef;
+    animation: pulsePower 1.5s infinite;
 }
 
 @keyframes pulsePower {
