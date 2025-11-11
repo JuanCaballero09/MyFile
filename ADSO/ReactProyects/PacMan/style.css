@@ -99,6 +99,7 @@ hr {
     position: relative;
 }
 
+
 .dot::after {
     content: '';
     position: absolute;
@@ -110,6 +111,36 @@ hr {
     background: yellow;
     border-radius: 50%;
     transform: translate(-50%, -50%);
+}
+
+.power {
+    background-color: rgba(0, 6, 12, 1);
+    position: relative;
+}
+
+.power::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: yellow;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulsePower 1.5s infinitef;
+}
+
+@keyframes pulsePower {
+    0% {
+        box-shadow: 0 0 8px yellow;
+    }
+    50% {
+        box-shadow: 0 0 16px yellow;
+    }
+    100% {
+        box-shadow: 0 0 8px yellow;
+    }
 }
 
 .pacman {
@@ -145,6 +176,14 @@ hr {
     letter-spacing: 2px;
 }
 
+.konamiText{
+    color: #ff0;
+    font-size: 18px;
+    margin-top: 10px;
+    white-space: nowrap;
+    letter-spacing: 2px;
+}
+
 .ghost {
     position: absolute;
     width: 28px;
@@ -154,6 +193,15 @@ hr {
     transition: transform 0.3s ease;
     image-rendering: pixelated;
     background-image: url('public/fantasma.gif');
+}
+
+.ghost.frightened {
+    /* usar GIF de estado comestible */
+    background-image: url("public/fnt comestible.gif");
+    /* asegurar tamaño y visibilidad */
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 1;
 }
 
 .ghost.red { 
@@ -195,6 +243,14 @@ hr {
     font-size: 24px;
     margin-bottom: 20px;
     color: #ffd700;
+    margin-top: 2px;
+}
+
+.modal-score {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #00ff00;
+    margin: 0;
 }
 
 .modal-button {

@@ -1,6 +1,6 @@
 const mapa = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,2,2,2,2,2,2,2,2,2,2,0,2,2,2,2,2,2,2,2,2,2,0],
+    [0,3,2,2,2,2,2,2,2,2,2,0,2,2,2,2,2,2,2,2,2,3,0],
     [0,2,0,0,0,2,0,0,0,0,2,0,2,0,0,0,0,2,0,0,0,2,0],
     [0,2,0,0,0,2,0,0,0,0,2,0,2,0,0,0,0,2,0,0,0,2,0],
     [0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0],
@@ -22,9 +22,21 @@ const mapa = [
     [0,0,0,2,0,2,0,2,0,0,0,0,0,0,0,2,0,2,0,2,0,0,0], 
     [0,2,2,2,2,2,0,2,2,2,2,0,2,2,2,2,0,2,2,2,2,2,0], 
     [0,2,0,0,0,0,0,0,0,0,2,0,2,0,0,0,0,0,0,0,0,2,0], 
-    [0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], 
+    [0,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0], 
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], 
 ];
+
+// Estado de power mode
+let powerMode = false;
+let powerTimeout = null;
+const POWER_DURATION = 8000; // ms
+
+let dificultad = 0.4;
+
+const codigoKonami = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
+const codigoKonami2 = ['w', 'w', 's', 's', 'a', 'd', 'a', 'd'];
+
+const entradaTeclas = [];
 
 const game = document.getElementById('game');
 
@@ -40,10 +52,10 @@ let tiempoTranscurrido = 0;
 let timerInterval = null;
 
 let fantasmas = [
-    { fila: 12, columna: 10, x: 11 * 24.8, y: 11 * 24.8, direccion: { fila: 0, columna: 1 }, color: 'red',    activo: false, tiempoActivacion: 0 },
-    { fila: 12, columna: 11, x: 10 * 24.8, y: 12 * 24.8, direccion: { fila: 0, columna: -1 }, color: 'pink',   activo: false, tiempoActivacion: 6 },
-    { fila: 13, columna: 10, x: 11 * 24.8, y: 12 * 24.8, direccion: { fila: 0, columna: 1 }, color: 'cyan',    activo: false, tiempoActivacion: 10 },
-    { fila: 13, columna: 11, x: 12 * 24.8, y: 12 * 24.8, direccion: { fila: 0, columna: -1 }, color: 'orange', activo: false, tiempoActivacion: 14 }
+    { fila: 11, columna: 11, x: 11 * 24.8, y: 11 * 24.8, direccion: { fila: 0, columna: 1 }, color: 'red',    activo: false, tiempoActivacion: 0 },
+    { fila: 12, columna: 11, x: 11 * 24.8, y: 12 * 24.8, direccion: { fila: 0, columna: -1 }, color: 'pink',   activo: false, tiempoActivacion: 6 },
+    { fila: 12, columna: 10, x: 10 * 24.8, y: 12 * 24.8, direccion: { fila: 0, columna: 1 }, color: 'cyan',    activo: false, tiempoActivacion: 10 },
+    { fila: 12, columna: 12, x: 12 * 24.8, y: 12 * 24.8, direccion: { fila: 0, columna: -1 }, color: 'orange', activo: false, tiempoActivacion: 14 }
 ];
 // Inicializar targets
 fantasmas.forEach(f => {
@@ -70,6 +82,12 @@ ready.classList.add('ready');
 ready.innerText = `Presiona una flecha o WASD para comenzar`;
 info.appendChild(ready);
 
+const konamiText = document.createElement('div');
+konamiText.classList.add('konamiText');
+konamiText.classList.add('hidden');
+konamiText.innerText = `¡Código Konami activado!`;
+info.appendChild(konamiText);
+
 // Crear mapa
 for (let fila = 0; fila < mapa.length; fila++) {
     for (let columna = 0; columna < mapa[fila].length; columna++){
@@ -78,6 +96,7 @@ for (let fila = 0; fila < mapa.length; fila++) {
         if (mapa[fila][columna] === 0) celda.classList.add('wall');
         if (mapa[fila][columna] === 1) celda.classList.add('path');
         if (mapa[fila][columna] === 2) celda.classList.add('dot');
+        if (mapa[fila][columna] === 3) celda.classList.add('power');
         game.appendChild(celda);
     }
 }
@@ -121,6 +140,15 @@ function actualizarPosicionFantasmas() {
 
 actualizarPosicionFantasmas();
 
+// Modo frightened
+function activarFrightenedMode() {
+    fantasmas.forEach((f, i) => {
+        f.frightened = true;
+        f.frightenedTimer = Date.now() + 7000; // dura 7 segundos
+        ghostDivs[i].classList.add('frightened');
+    });
+}
+
 // Timer
 function actualizarTimer() {
     if (tiempoInicio) {
@@ -134,20 +162,46 @@ function actualizarTimer() {
                 salirDeCentro(f, i);
             }
         });
+
+        // Revisar fantasmas comidos para reingreso
+        fantasmas.forEach((f, i) => {
+            if (f.comido && f.reaparecerAt && Date.now() >= f.reaparecerAt) {
+                // Revivir el fantasma en el centro
+                f.comido = false;
+                f.reaparecerAt = null;
+                f.activo = true;
+                f.salio = false;
+
+                // Ubicarlo exactamente en el centro del corral
+                const tam = 24.8;
+                const centroFila = 12;
+                const centroColumna = 11;
+                f.x = centroColumna * tam;
+                f.y = centroFila * tam;
+                f.fila = centroFila;
+                f.columna = centroColumna;
+                f.targetX = f.x;
+                f.targetY = f.y;
+                f.direccion = { fila: 0, columna: 0 };
+
+                // Mostrarlo visualmente
+                ghostDivs[i].style.display = 'block';
+
+                // Salida suave hacia el laberinto
+                salirDeCentro(f, i);
+            }
+        });
     }
 }
 
 // --- NUEVA FUNCIÓN: salida suave del centro ---
 function salirDeCentro(f, i) {
     const tamCelda = 24.8;
-
-    // Punto de destino: la "puerta" de salida del corral
     const salidaFila = 7;
     const salidaColumna = 11;
     const destinoX = salidaColumna * tamCelda;
     const destinoY = salidaFila * tamCelda;
 
-    // Movimiento suave hacia la puerta
     const anim = setInterval(() => {
         const dx = destinoX - f.x;
         const dy = destinoY - f.y;
@@ -159,17 +213,16 @@ function salirDeCentro(f, i) {
             f.y += (dy / dist) * step;
             ghostDivs[i].style.transform = `translate(${f.x}px, ${f.y}px)`;
         } else {
-            // Llegó a la puerta
             clearInterval(anim);
-
-            // Lo ubicamos justo en la salida
             f.x = destinoX;
             f.y = destinoY;
             f.fila = salidaFila;
             f.columna = salidaColumna;
-
-            // Marca que ya puede moverse libremente
             f.salio = true;
+            f.activo = true;
+            f.targetX = destinoX;
+            f.targetY = destinoY;
+            f.direccion = { fila: 0, columna: 0 };
             ghostDivs[i].style.transform = `translate(${f.x}px, ${f.y}px)`;
         }
     }, 16);
@@ -200,9 +253,33 @@ function moverPacman() {
         marcador.innerText = `Score: ${score}`;
     }
 
-    fantasmas.forEach(f => {
+    // Consumo de pastilla de poder
+    if (mapa[pacman.fila][pacman.columna] === 3) {
+        // quitar la pastilla del mapa
+        mapa[pacman.fila][pacman.columna] = 1;
+        const index2 = pacman.fila * mapa[0].length + pacman.columna;
+        const cell2 = game.children[index2];
+        cell2.classList.remove('power');
+        cell2.classList.add('path');
+
+        // puntos por consumir pastilla (más que un punto normal)
+        score += 10;
+        marcador.innerText = `Score: ${score}`;
+
+        // activar modo poder
+        activarPowerMode();
+        activarFrightenedMode();
+    }
+
+    fantasmas.forEach((f, i) => {
+        // Si el fantasma está en estado comestible
         if (f.activo && Math.abs(f.fila - pacman.fila) < 1 && Math.abs(f.columna - pacman.columna) < 1) {
-            gameOver();
+            if (f.frightened) {
+                // Comer al fantasma
+                comerFantasma(f, i);
+            } else {
+                gameOver();
+            }
         }
     });
 
@@ -284,7 +361,14 @@ function moverFantasmas() {
             ghostDivs[i].style.transform = `translate(${f.x}px, ${f.y}px)`;
             // Colisión con Pac-Man durante movimiento
             const distPac = Math.hypot(f.x - pacman.columna * tamCelda, f.y - pacman.fila * tamCelda);
-            if (distPac < 20) gameOver();
+            if (distPac < 20) {
+                if (f.frightened) {
+                    // Pac-Man come al fantasma en movimiento
+                    comerFantasma(f, i);
+                } else {
+                    gameOver();
+                }
+            }
 
             // No decidir nueva dirección hasta llegar al objetivo
             return;
@@ -338,17 +422,37 @@ function moverFantasmas() {
         // "Inteligencia": 40% intenta acercarse al Pac-Man, 60% al azar
         let elegido;
 
-        if (Math.random() < 0.4) {
-            const dir = direccionHaciaPacman(filaActual, columnaActual, pacman.fila, pacman.columna);
-            if (dir) {
-                // usamos la primera dirección devuelta por BFS
-                elegido = { fila: dir.fila, columna: dir.col };
+        if (f.frightened) {
+            // 🔹 Modo miedo: alejarse de Pac-Man
+            const dx = pacman.columna - columnaActual;
+            const dy = pacman.fila - filaActual;
+            const distanciaPac = Math.hypot(dx, dy);
+
+            // Buscar la dirección que más ALEJE al fantasma
+            let maxDist = -Infinity;
+            let mejor = validas[0];
+            validas.forEach(d => {
+                const nx = columnaActual + d.columna;
+                const ny = filaActual + d.fila;
+                const dist = Math.hypot(pacman.columna - nx, pacman.fila - ny);
+                if (dist > maxDist) {
+                    maxDist = dist;
+                    mejor = d;
+                }
+            });
+            elegido = mejor;
+        } else {
+            // 🔹 Modo normal: comportamiento original
+            if (Math.random() < dificultad) {
+                const dir = direccionHaciaPacman(filaActual, columnaActual, pacman.fila, pacman.columna, f);
+                if (dir) {
+                    elegido = { fila: dir.fila, columna: dir.col };
+                } else {
+                    elegido = validas[Math.floor(Math.random() * validas.length)];
+                }
             } else {
-                // si no hay camino directo, moverse al azar
                 elegido = validas[Math.floor(Math.random() * validas.length)];
             }
-        } else {
-            elegido = validas[Math.floor(Math.random() * validas.length)];
         }
 
         // Fijar nueva dirección y objetivo (una celda adelante)
@@ -380,6 +484,63 @@ function gameOver() {
     modal.classList.remove('hidden');
 }
 
+// Activar modo poder: fantasmas se vuelven comestibles durante POWER_DURATION
+function activarPowerMode() {
+    // limpiar timeout previo si existe
+    if (powerTimeout) clearTimeout(powerTimeout);
+    powerMode = true;
+    // Marcar fantasmas como frightened visualmente y lógicamente
+    fantasmas.forEach((f, i) => {
+        f.frightened = true;
+        // añadir clase visual
+        ghostDivs[i].classList.add('frightened');
+    });
+
+    // Al expirar, devolverlos al estado normal
+    powerTimeout = setTimeout(() => {
+        powerMode = false;
+        fantasmas.forEach((f, i) => {
+            f.frightened = false;
+            ghostDivs[i].classList.remove('frightened');
+        });
+        powerTimeout = null;
+    }, POWER_DURATION);
+}
+
+// Comer un fantasma: sumar puntos, ocultarlo y reubicarlo en el centro (sera reingresado luego)
+function comerFantasma(f, i) {
+    // evitar comer múltiples veces
+    if (f.comido) return;
+
+    f.comido = true;
+    f.frightened = false;
+    ghostDivs[i].classList.remove('frightened');
+
+    // sumar puntos
+    score += 200;
+    marcador.innerText = `Score: ${score}`;
+
+    // ocultar temporalmente el fantasma
+    ghostDivs[i].style.display = 'none';
+
+    // reiniciar al centro del corral
+    const tam = 24.8;
+    const centroFila = 12;
+    const centroColumna = 11;
+    f.x = centroColumna * tam;
+    f.y = centroFila * tam;
+    f.fila = centroFila;
+    f.columna = centroColumna;
+    f.targetX = f.x;
+    f.targetY = f.y;
+    f.direccion = { fila: 0, columna: 0 };
+    f.activo = false;
+    f.salio = false;
+
+    // reaparición programada
+    f.reaparecerAt = Date.now() + 3000;
+}
+
 function ganar() {
     clearInterval(moveInterval);
     clearInterval(timerInterval);
@@ -387,6 +548,7 @@ function ganar() {
     const modal = document.getElementById('modal');
     modal.querySelector('.modal-h2').innerText = '¡Ganaste!';
     document.getElementById('finalTime').innerText = `Tiempo: ${tiempoTranscurrido}s`;
+        document.getElementById('finalScore').innerText = `Puntaje: ${score}`;
     modal.classList.remove('hidden');
 }
 
@@ -397,6 +559,19 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowDown' || e.key === 's') direccion = 'down';
     if (e.key === 'ArrowLeft' || e.key === 'a') direccion = 'left';
     if (e.key === 'ArrowRight' || e.key === 'd') direccion = 'right';
+
+    entradaTeclas.push(e.key);
+
+    if (entradaTeclas.length > codigoKonami.length) entradaTeclas.shift();
+
+    const correcto = codigoKonami.every((tecla, i) => tecla === entradaTeclas[i] ) ||
+                     codigoKonami2.every((tecla, i) => tecla === entradaTeclas[i] );
+    if (correcto) {
+        console.log("🌀 Código Konami activado: Aumentando dificultad");
+        dificultad = 0.9; // o cualquier efecto que quieras
+        entradaTeclas.length = 0; // limpia el buffer para que no se repita
+        konamiText.classList.remove('hidden');
+    }
     
     // Iniciar movimiento al primer input
     ready.classList.add('hidden');
