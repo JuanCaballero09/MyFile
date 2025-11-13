@@ -23,6 +23,19 @@ h1 {
     color: white !important;
 }
 
+h4 {
+    color: #fff;
+    font-size: 20px;
+    margin: 10px;
+    margin-top: 25px;
+}
+
+img{
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
 @keyframes rainbow {
     0% {
         text-shadow: 0 0 6px red, 0 0 12px red, 0 0 18px red;
@@ -81,6 +94,14 @@ hr {
     background-color: rgba(0, 6, 12,1);
 }
 
+#vidas{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
 .cell {
     width: 25px;
     height: 25px;
@@ -98,7 +119,6 @@ hr {
     background-color: rgba(0, 6, 12, 1);
     position: relative;
 }
-
 
 .dot::after {
     content: '';
@@ -147,7 +167,7 @@ hr {
     position: absolute;
     width: 30px;
     height: 30px;
-    background-image: url('public/packaa.gif');
+    background-image: url('../public/packaa.gif');
     background-size: contain;
     background-repeat: no-repeat;
     transition: transform 0.2s ease;
@@ -192,16 +212,17 @@ hr {
     background-repeat: no-repeat;
     transition: transform 0.3s ease;
     image-rendering: pixelated;
-    background-image: url('public/fantasma.gif');
+    background-image: url('../public/fantasma.gif');
 }
 
 .ghost.frightened {
     /* usar GIF de estado comestible */
-    background-image: url("public/fnt comestible.gif");
+    background-image: url("../public/fnt comestible.gif");
     /* asegurar tamaño y visibilidad */
     background-size: contain;
     background-repeat: no-repeat;
     opacity: 1;
+    filter: hue-rotate(0deg) saturate(600%) brightness(1.1) !important;
 }
 
 .ghost.red { 

@@ -10,8 +10,8 @@ const mapa = [
     [1,1,1,1,0,2,0,1,1,1,1,1,1,1,1,1,0,2,0,1,1,1,1], 
     [1,1,1,1,0,2,0,1,0,0,0,1,0,0,0,1,0,2,0,1,1,1,1], 
     [0,0,0,0,0,2,0,1,0,1,1,1,1,1,0,1,0,2,0,0,0,0,0], 
-    [0,1,1,1,1,2,1,1,0,1,1,1,1,1,0,1,1,2,1,1,1,1,0], 
-    [0,1,1,1,1,2,1,1,0,1,1,1,1,1,0,1,1,2,1,1,1,1,0], 
+    [4,1,1,1,1,2,1,1,0,1,1,1,1,1,0,1,1,2,1,1,1,1,4], 
+    [4,1,1,1,1,2,1,1,0,1,1,1,1,1,0,1,1,2,1,1,1,1,4], 
     [0,0,0,0,0,2,0,1,0,0,0,0,0,0,0,1,0,2,0,0,0,0,0], 
     [1,1,1,1,0,2,0,1,1,1,1,1,1,1,1,1,0,2,0,1,1,1,1], 
     [1,1,1,1,0,2,0,1,1,1,1,1,1,1,1,1,0,2,0,1,1,1,1], 
@@ -51,18 +51,41 @@ let tiempoInicio = null;
 let tiempoTranscurrido = 0;
 let timerInterval = null;
 
+const vidas = document.getElementById('vidas');
+// Vidas del jugador (mutable)
+let vidasActuales = 3;
+
+// Renderiza las vidas en el contenedor `#vidas`
+function renderVidas() {
+    // Limpiar contenedor antes de renderizar para evitar duplicados
+    vidas.innerHTML = '';
+    for (let i = 0; i < vidasActuales; i++) {
+        const vidaImg = document.createElement('img');
+        vidaImg.src = './public/corazones.png';
+        vidaImg.classList.add('vida');
+        vidas.appendChild(vidaImg);
+    }
+}
+
+renderVidas();
+
 let fantasmas = [
     { fila: 11, columna: 11, x: 11 * 24.8, y: 11 * 24.8, direccion: { fila: 0, columna: 1 }, color: 'red',    activo: false, tiempoActivacion: 0 },
     { fila: 12, columna: 11, x: 11 * 24.8, y: 12 * 24.8, direccion: { fila: 0, columna: -1 }, color: 'pink',   activo: false, tiempoActivacion: 6 },
     { fila: 12, columna: 10, x: 10 * 24.8, y: 12 * 24.8, direccion: { fila: 0, columna: 1 }, color: 'cyan',    activo: false, tiempoActivacion: 10 },
     { fila: 12, columna: 12, x: 12 * 24.8, y: 12 * 24.8, direccion: { fila: 0, columna: -1 }, color: 'orange', activo: false, tiempoActivacion: 14 }
 ];
+
 // Inicializar targets
 fantasmas.forEach(f => {
   f.targetX = f.x;
   f.targetY = f.y;
 });
+
+// Guardar estado inicial de los fantasmas para poder reubicarlos al perder vida
+const ghostInitialState = fantasmas.map(f => ({ fila: f.fila, columna: f.columna, x: f.x, y: f.y, tiempoActivacion: f.tiempoActivacion }));
 let ghostInterval = null;
+let isRespawning = false;
 
 const info = document.querySelector('.info');
 const marcador = document.createElement('div');
@@ -97,6 +120,7 @@ for (let fila = 0; fila < mapa.length; fila++) {
         if (mapa[fila][columna] === 1) celda.classList.add('path');
         if (mapa[fila][columna] === 2) celda.classList.add('dot');
         if (mapa[fila][columna] === 3) celda.classList.add('power');
+        if (mapa[fila][columna] === 4) celda.classList.add('portal');
         game.appendChild(celda);
     }
 }
@@ -140,7 +164,7 @@ function actualizarPosicionFantasmas() {
 
 actualizarPosicionFantasmas();
 
-// Modo frightened
+// Modo frightened (modo con poder)
 function activarFrightenedMode() {
     fantasmas.forEach((f, i) => {
         f.frightened = true;
@@ -244,12 +268,15 @@ function moverPacman() {
     actualizarPosicion();
 
     if (mapa[pacman.fila][pacman.columna] === 2) {
+        const comerSound = new Audio('./assets/sounds/comer.mp3')
+        comerSound.playbackRate = 1.7;
+        comerSound.play();
         mapa[pacman.fila][pacman.columna] = 1;
         const index = pacman.fila * mapa[0].length + pacman.columna;
         const cell = game.children[index];
         cell.classList.remove('dot');
         cell.classList.add('path');
-        score++;
+        score += 10;
         marcador.innerText = `Score: ${score}`;
     }
 
@@ -269,6 +296,10 @@ function moverPacman() {
         // activar modo poder
         activarPowerMode();
         activarFrightenedMode();
+    }
+
+    if (mapa[pacman.fila][pacman.columna] === 4) {
+        portal();
     }
 
     fantasmas.forEach((f, i) => {
@@ -333,7 +364,8 @@ function direccionHaciaPacman(filaInicio, colInicio, filaObjetivo, colObjetivo) 
 
 // Movimiento fantasmas
 function moverFantasmas() {
-    const velocidad = 1; // píxeles por frame (ajusta si quieres más/menos suavidad)
+    const velocidadBase = 1; // píxeles por frame (ajusta para velocidad normal)
+    const FRIGHTENED_SPEED_FACTOR = 0.5; // multiplica velocidad cuando frightened (0.5 = mitad de velocidad)
     const tamCelda = 24.8;
 
     fantasmas.forEach((f, i) => {
@@ -345,6 +377,9 @@ function moverFantasmas() {
         const distancia = Math.hypot(dx, dy);
 
         if (distancia > 0.1) {
+            // ajustar velocidad según estado frightened
+            const velocidad = f.frightened ? velocidadBase * FRIGHTENED_SPEED_FACTOR : velocidadBase;
+
             // Mover hacia el objetivo con velocidad constante
             const step = Math.min(velocidad, distancia);
             f.x += (dx / distancia) * step;
@@ -463,7 +498,7 @@ function moverFantasmas() {
         // Por seguridad: si target es muro (no debería), cancelar
         const tfila = filaActual + elegido.fila;
         const tcol = columnaActual + elegido.columna;
-        if (!mapa[tfila] || mapa[tfila][tcol] === 0) {
+        if (!mapa[tfila] || mapa[tfila][tcol] === 0 || mapa[tfila][tcol] === 4 ) {
             // evitar cruzar muros; dejar target en la celda actual
             f.targetX = f.x;
             f.targetY = f.y;
@@ -475,17 +510,77 @@ function moverFantasmas() {
 
 // Funciones de fin
 function gameOver() {
-    clearInterval(moveInterval);
-    clearInterval(timerInterval);
-    clearInterval(ghostInterval);
-    const modal = document.getElementById('modal');
-    modal.querySelector('.modal-h2').innerText = '¡Perdiste!';
-    document.getElementById('finalTime').innerText = `Tiempo: ${tiempoTranscurrido}s`;
-    modal.classList.remove('hidden');
-}
+    // Evitar reentradas mientras ya estamos en respawn/animación
+    if (isRespawning) return;
 
+    // reducir vida y actualizar visual
+    if (vidasActuales > 0) {
+        vidasActuales--;
+        renderVidas();
+    }
+
+    // Si ya no quedan vidas, finalizar partida
+    if (vidasActuales === 0) {
+        clearInterval(moveInterval);
+        clearInterval(timerInterval);
+        clearInterval(ghostInterval);
+        new Audio('./assets/sounds/Muerte.mp3').play().catch(()=>{});
+        const modal = document.getElementById('modal');
+        modal.querySelector('.modal-h2').innerText = '¡Perdiste!';
+        document.getElementById('finalTime').innerText = `Tiempo: ${tiempoTranscurrido}s`;
+        modal.classList.remove('hidden');
+        return;
+    }
+
+    // Si quedan vidas, reproducir sonido y hacer respawn
+    isRespawning = true;
+    // detener temporizadores de movimiento
+    clearInterval(moveInterval);
+    clearInterval(ghostInterval);
+
+    // reproducir sonido de vida perdida (intenta evitar error de autoplay)
+    new Audio('./assets/sounds/Muerte.mp3').play().catch(()=>{});
+
+    // ocultar Pac-Man durante la animación de muerte
+    pacmanDiv.classList.add('hidden');
+
+    // breve pausa para mostrar la 'muerte'
+    setTimeout(() => {
+        // Reubicar Pac-Man a la posición inicial
+        pacman.fila = 19;
+        pacman.columna = 11;
+        actualizarPosicion();
+
+        // Reubicar fantasmas a su estado inicial y resetear flags
+        fantasmas.forEach((f, i) => {
+            const init = ghostInitialState[i];
+            f.fila = init.fila;
+            f.columna = init.columna;
+            f.x = init.x;
+            f.y = init.y;
+            f.targetX = f.x;
+            f.targetY = f.y;
+            f.activo = false;
+            f.salio = false;
+            f.comido = false;
+            f.frightened = false;
+            ghostDivs[i].classList.remove('frightened');
+            ghostDivs[i].style.display = 'block';
+            ghostDivs[i].style.transform = `translate(${f.x}px, ${f.y}px)`;
+        });
+
+        // Mostrar Pac-Man y reanudar movimiento tras un pequeño retardo
+        pacmanDiv.classList.remove('hidden');
+        // reanudar intervalos
+        moveInterval = setInterval(moverPacman, 400);
+        ghostInterval = setInterval(moverFantasmas, 16);
+        isRespawning = false;
+    }, 1200);
+}
 // Activar modo poder: fantasmas se vuelven comestibles durante POWER_DURATION
 function activarPowerMode() {
+
+    new Audio('./assets/sounds/comerSuper.mp3').play();
     // limpiar timeout previo si existe
     if (powerTimeout) clearTimeout(powerTimeout);
     powerMode = true;
@@ -585,8 +680,29 @@ document.addEventListener('keydown', e => {
             timerInterval = setInterval(actualizarTimer, 100);
             ghostInterval = setInterval(moverFantasmas, 16);
         }
-        moveInterval = setInterval(moverPacman, 300);
+        moveInterval = setInterval(moverPacman, 350);
     }
 });
 
 document.getElementById('retry').addEventListener('click', () => location.reload());
+
+function portal() {
+    // Ocultar Pac-Man brevemente, teletransportar y luego mostrar
+    pacmanDiv.classList.add('hidden');
+    // pequeño retardo para que parezca desaparecer al cruzar
+    setTimeout(() => {
+        if (pacman.columna < 1) {
+            pacman.columna = mapa[0].length - 1;
+        } else if (pacman.columna > mapa[0].length - 2) {
+            pacman.columna = 0;
+        }
+        // Actualizar su posición visual y volver a mostrar
+        actualizarPosicion();
+        pacmanDiv.classList.remove('hidden');
+    }, 100); // ajustar ms si quieres un efecto más rápido/lento
+}
+
+document.addEventListener('click', function(){
+    new Audio('./assets/sounds/inicio.mp3').play();
+}, { once: true }); // Solo se ejecuta una vez
+
